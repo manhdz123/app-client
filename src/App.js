@@ -5,12 +5,13 @@ import AppNavbar from './components/AppNavbar';
 import ShoppingList from './components/ShoppingList';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <AppNavbar/>
-        <ShoppingList/>
-      </div>
+        <div className="App">
+          <AppNavbar />
+          <ShoppingList />
+        </div>
     );
   }
 }

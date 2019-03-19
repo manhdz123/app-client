@@ -11,7 +11,8 @@ import {
     Container
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import {getItems} from '../actions/types';
+import { getItems, addItem } from '../actions/types';
+import uuid from 'uuid';
 
 class ItemModal extends Component {
     state = {
@@ -19,7 +20,7 @@ class ItemModal extends Component {
         name: ''
     }
 
-    toggle() {
+    toggle = () => {
         this.setState({ modal: !this.state.modal })
     }
 
@@ -27,7 +28,7 @@ class ItemModal extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    onSubmit = event => {
+    onSubmit = (event) => {
         event.preventDefault();
         const newItem = {
             id: uuid(),
@@ -37,33 +38,47 @@ class ItemModal extends Component {
         this.props.addItem(newItem);
         this.toggle();
     }
+
+
     render() {
         return (
             <Container>
-            <Button
-                color="dark"
-                style={{ marginBottom: '2rem' }}
-                onClick={this.toggle.bind(this)}
-            >
-                Add Item
+                <Button
+                    color="dark"
+                    style={{ marginBottom: '2rem' }}
+                    onClick={this.toggle}
+                >
+                    Add Item
             </Button>
-            <Modal>
-                <ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Label for="item">Item</Label>
-                                <Input
-                                    type="text"
-                                    name="name"
-                                    id="item"
-                                    placeholder="Add Shopping Item"
-                                    onChange={(event) => this.onChange(event)} />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                </ModalHeader>
-            </Modal>
+                <Modal
+                    isOpen={this.state.modal}
+                    toggle={this.toggle}
+                >
+                    <ModalHeader toggle={this.toggle}>
+                        <ModalBody>
+                            <Form>
+                                <FormGroup>
+                                    <Label for="item">Item</Label>
+                                    <Input
+                                        type="text"
+                                        name="name"
+                                        id="item"
+                                        placeholder="Add Shopping Item"
+                                        onChange={(event) => this.onChange(event)} 
+                                        onKeyUp={(event) => event.key === 'Enter' ? this.onSubmit(event) : event.preventDefault()}
+                                        />
+                                </FormGroup>
+                                <Button
+                                    color="dark"
+                                    style={{ marginBottom: '2rem' }}
+                                    onClick={(event) => this.onSubmit(event)}
+                                >
+                                    Add Item
+                                 </Button>
+                            </Form>
+                        </ModalBody>
+                    </ModalHeader>
+                </Modal>
             </Container>
         )
     }

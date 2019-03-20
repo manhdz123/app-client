@@ -7,11 +7,12 @@ import {deleteItem, getItems} from '../actions/types'
 class ShoppingList extends Component {
 
     componentDidMount(){
-        this.props.getItems();
+       this.props.getItems();
     }
 
     render() {
         let {items} = this.props;
+        console.log(items);
         return (
             <Container>
                 <ListGroup>
@@ -48,7 +49,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getItems: () => {
-            dispatch(getItems);
+            dispatch(getItems());
         },
 
         deleteItem: (id) => {

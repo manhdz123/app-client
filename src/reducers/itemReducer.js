@@ -1,13 +1,8 @@
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM } from '../actions/types';
-import uuid from 'uuid';
+import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING, GET_ITEMS_FAILED, GET_ITEMS_SUCCEEDED } from '../actions/types';
 
 const initialState = {
-    items: [
-        { id: uuid(), name: 'John' },
-        { id: uuid(), name: 'Bill' },
-        { id: uuid(), name: 'Mary' },
-        { id: uuid(), name: 'Steve'},
-    ]
+    items: [],
+    loading: false
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +10,7 @@ export default (state = initialState, action) => {
         case GET_ITEMS:
             return {
                 ...state,
+                items: [...state.items, action.items]
             }
 
         case DELETE_ITEM:
@@ -27,6 +23,26 @@ export default (state = initialState, action) => {
                 ...state,
                 items: [...state.items, action.item]
             }
+        case ITEMS_LOADING:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case GET_ITEMS_FAILED:
+            return {
+                ...state,
+                error: action.payload,
+                loading: true
+            }
+
+        case GET_ITEMS_SUCCEEDED:
+            return {
+                ...state,
+                items: action.payload,
+                loading: false
+            }
+
         default:
             return state;
     }
